@@ -1,0 +1,30 @@
+services:
+  adweb:
+    build: .
+    container_name: adweb
+    restart: unless-stopped
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - WEB_USERS=${WEB_USERS}
+      - LDAP_BIND_USER=${LDAP_BIND_USER}
+      - LDAP_BIND_PASSWORD=${LDAP_BIND_PASSWORD}
+      - DEFAULT_PASSWORD=${DEFAULT_PASSWORD}
+      - LDAP_HOST=dc01.ad.gavom.local
+      - BASE_DN=DC=ad,DC=gavom,DC=local
+      - ROOT_OU=OU=Gavom,DC=ad,DC=gavom,DC=local
+      - UPN_SUFFIX=ad.gavom.local
+      - LDAP_VERIFY=${LDAP_VERIFY:-1}
+      - COOKIE_SECURE=${COOKIE_SECURE:-1}
+    # O nome no certificado do Samba é dc01.ad.gavom.local
+    extra_hosts:
+      - "dc01.ad.gavom.local:192.168.10.254"
+    networks:
+      dokploy-network:
+      ipvlan_lan:
+        ipv4_address: 192.168.10.253   # IP livre na sua LAN (confirme que ninguém usa)
+
+networks:
+  dokploy-network:
+    external: true
+  ipvlan_lan:
+    external: true

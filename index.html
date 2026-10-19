@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criar usuários · AD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="top">
+    <h1>Usuários do AD</h1>
+    <div class="who">
+      <span>{{ usuario }}</span>
+      <form method="post" action="{{ url_for('logout') }}">
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        <button class="link" type="submit">Sair</button>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <div id="msg" class="banner err" role="alert" {% if not erro %}hidden{% endif %}>{{ erro or '' }}</div>
+
+    <section id="step-form" class="panel">
+      <h2>Novos usuários</h2>
+      <p class="hint">Digite o nome completo e escolha a unidade. Para vários de uma vez, cole uma lista com um nome por linha no primeiro campo.</p>
+      <div id="rows"></div>
+      <button type="button" id="add" class="ghost">+ Adicionar usuário</button>
+      <div class="actions">
+        <button type="button" id="preview" class="primary">Conferir logins</button>
+      </div>
+    </section>
+
+    <section id="step-preview" class="panel" hidden>
+      <h2>Confira antes de criar</h2>
+      <p class="hint">O login pode ser editado. A senha inicial é a padrão e cada pessoa precisa trocá-la no primeiro logon.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nome</th><th>Unidade</th><th>Login</th><th>Situação</th></tr></thead>
+          <tbody id="prev-body"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <button type="button" id="back" class="secondary">Voltar e editar</button>
+        <button type="button" id="create" class="primary">Criar usuários</button>
+      </div>
+    </section>
+
+    <section id="step-result" class="panel" hidden>
+      <h2>Resultado</h2>
+      <p id="summary" class="hint"></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nome</th><th>Unidade</th><th>Login</th><th>Resultado</th></tr></thead>
+          <tbody id="res-body"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <button type="button" id="again" class="primary">Criar mais usuários</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const UNITS = {{ unidades|tojson }};
+    const CSRF = {{ csrf|tojson }};
+    const UPN = {{ upn|tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

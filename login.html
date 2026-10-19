@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar · Usuários do AD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="auth">
+    <form class="panel" method="post" action="{{ url_for('login') }}">
+      <h2>Usuários do AD</h2>
+      <p class="hint">Entre para criar usuários no Active Directory.</p>
+      {% if erro %}<div class="banner err" role="alert">{{ erro }}</div>{% endif %}
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <div class="field">
+        <label for="usuario">Usuário</label>
+        <input id="usuario" name="usuario" autocomplete="username" required autofocus>
+      </div>
+      <div class="field">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="primary" type="submit">Entrar</button>
+    </form>
+  </div>
+</body>
+</html>

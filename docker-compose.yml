@@ -3,6 +3,8 @@ services:
     build: .
     container_name: adweb
     restart: unless-stopped
+    labels:
+      - traefik.docker.network=dokploy-network
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - WEB_USERS=${WEB_USERS}
